@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080b10;
+      --surface: #0f1318;
+      --accent: #00e5ff;
+      --green: #00ff88;
+      --text: #cdd6f4;
+      --muted: #6c7086;
+      --border: #1e2130;
+      --mono: 'Space Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 99;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 32px;
+      background: rgba(8,11,16,0.85); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: var(--mono); color: var(--accent); font-size: 1rem; text-decoration: none; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: .75rem; color: var(--muted); text-decoration: none; letter-spacing: .08em; transition: color .2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .burger { display: none; background: none; border: 1px solid var(--border); color: var(--text); padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 1rem; }
+
+    .page { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 72px; position: relative; overflow: hidden; }
+    #hero::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 70% 40%, rgba(0,229,255,.06), transparent 60%); }
+    .pre-name { font-family: var(--mono); color: var(--green); font-size: .8rem; letter-spacing: .15em; margin-bottom: 10px; }
+    h1 { font-family: var(--mono); font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.1; color: #fff; margin-bottom: 14px; }
+    h1 span { color: var(--accent); }
+    .tagline { font-family: var(--mono); font-size: clamp(.9rem, 2vw, 1.1rem); color: var(--muted); margin-bottom: 20px; min-height: 1.6em; }
+    .cursor { display: inline-block; width: 2px; height: 1em; background: var(--accent); margin-left: 2px; vertical-align: middle; animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .bio { max-width: 500px; color: var(--muted); margin-bottom: 32px; font-size: .95rem; }
+    .bio strong { color: var(--accent); font-weight: 500; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; padding: 11px 24px; border-radius: 4px; text-decoration: none; transition: transform .15s, opacity .2s; display: inline-block; }
+    .btn:hover { transform: translateY(-2px); opacity: .85; }
+    .btn-fill { background: var(--accent); color: #080b10; font-weight: 700; }
+    .btn-ghost { border: 1px solid var(--accent); color: var(--accent); }
+
+    section { padding: 80px 0; }
+    .sec-label { font-family: var(--mono); color: var(--green); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 6px; }
+    h2 { font-family: var(--mono); font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 700; margin-bottom: 36px; color: #fff; }
+    h2::after { content: ''; display: block; width: 40px; height: 2px; background: var(--accent); margin-top: 10px; }
+    #skills, #contact { background: var(--surface); }
+
+    .about-wrap { display: flex; gap: 48px; align-items: flex-start; }
+    .avatar { flex-shrink: 0; width: 160px; height: 160px; border-radius: 8px; background: var(--surface); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; box-shadow: 5px 5px 0 var(--accent); }
+    .about-text p { color: var(--muted); margin-bottom: 12px; font-size: .95rem; }
+    .facts { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
+    .fact span:first-child { display: block; font-family: var(--mono); font-size: .65rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+    .fact span:last-child { font-family: var(--mono); color: var(--accent); font-size: .85rem; }
+
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .skill-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; transition: border-color .2s, transform .2s; }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .skill-card h3 { font-family: var(--mono); font-size: .72rem; color: var(--accent); letter-spacing: .1em; margin-bottom: 12px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-family: var(--mono); font-size: .7rem; padding: 3px 10px; border: 1px solid var(--border); border-radius: 100px; color: var(--muted); transition: border-color .2s, color .2s; }
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; transition: border-color .2s, transform .2s; }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-card:hover { border-color: rgba(0,229,255,.25); transform: translateY(-3px); }
+    .proj-type { font-family: var(--mono); font-size: .68rem; color: var(--green); letter-spacing: .1em; }
+    .proj-title { font-family: var(--mono); font-size: 1rem; font-weight: 700; color: #fff; }
+    .proj-desc { color: var(--muted); font-size: .88rem; flex: 1; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .proj-tag { font-family: var(--mono); font-size: .68rem; padding: 3px 9px; background: rgba(0,229,255,.08); color: var(--accent); border-radius: 4px; }
+
+    #contact { text-align: center; }
+    .contact-sub { color: var(--muted); font-size: .95rem; max-width: 420px; margin: -20px auto 32px; }
+    .social-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+    .social-link { font-family: var(--mono); font-size: .75rem; padding: 10px 18px; border: 1px solid var(--border); border-radius: 6px; text-decoration: none; color: var(--muted); transition: border-color .2s, color .2s, transform .2s; }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    footer { text-align: center; padding: 24px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+    footer span { color: var(--accent); }
+
+    .fi { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+    .fi.show { opacity: 1; transform: none; }
+
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .burger { display: block; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 57px; left: 0; right: 0; background: var(--surface); padding: 20px 24px; gap: 16px; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .about-wrap { flex-direction: column; gap: 24px; }
+      .avatar { width: 120px; height: 120px; font-size: 2.8rem; }
+      .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="logo">DaniZakhran</a>
+    <button class="burger" id="burger">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="hero">
+    <div class="page">
+      <p class="pre-name">// hello, world</p>
+      <h1>Dani <span>Zakhran</span></h1>
+      <p class="tagline"><span id="typed"></span><span class="cursor"></span></p>
+      <p class="bio">CS student interested in <strong>AI, Machine Learning & Data Science</strong>. I love exploring how data can tell stories and how machines can learn from them.</p>
+      <div class="cta">
+        <a href="#projects" class="btn btn-fill">View My Work</a>
+        <a href="#contact" class="btn btn-ghost">Contact Me</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="page">
+      <p class="sec-label fi">01. about</p>
+      <h2 class="fi">Who I Am</h2>
+      <div class="about-wrap fi">
+        <div class="avatar">👨‍💻</div>
+        <div class="about-text">
+          <p>Hi! I'm <strong style="color:#fff">M Kahlil Dani Zakhran M</strong>, a fifth-year CS student at Amikom University. I'm fascinated by how machines can learn, adapt, and make intelligent decisions.</p>
+          <p>My interests lie in AI, data science, and building things that solve real problems. I enjoy learning by doing — most of what I know came from projects and curiosity.</p>
+          <p>Outside coding: Playing games, fishing And Outdoor activities.</p>
+          <div class="facts">
+            <div class="fact"><span>Location</span><span>Yogyakarta, ID</span></div>
+            <div class="fact"><span>University</span><span>Amikom University</span></div>
+            <div class="fact"><span>Focus</span><span>AI / Data Science</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="page">
+      <p class="sec-label fi">02. skills</p>
+      <h2 class="fi">What I Use</h2>
+      <div class="skills-grid">
+        <div class="skill-card fi">
+          <h3>// languages</h3>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Java</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+        <div class="skill-card fi">
+          <h3>// ai & data</h3>
+          <div class="tags">
+            <span class="tag">NumPy</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Matplotlib</span>
+          </div>
+        </div>
+        <div class="skill-card fi">
+          <h3>// tools</h3>
+          <div class="tags">
+            <span class="tag">Git</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">Jupyter</span>
+            <span class="tag">Linux</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="page">
+      <p class="sec-label fi">03. projects</p>
+      <h2 class="fi">Things I've Built</h2>
+      <div class="projects-grid">
+        <div class="project-card fi">
+          <p class="proj-type">🌐 Web</p>
+          <h3 class="proj-title">This Portfolio</h3>
+          <p class="proj-desc">My first personal website, built from scratch as a college assignment. Designed and coded by hand using only HTML, CSS, and JavaScript — no frameworks.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">HTML</span>
+            <span class="proj-tag">CSS</span>
+            <span class="proj-tag">JavaScript</span>
+          </div>
+        </div>
+        <div class="project-card fi" style="border-style: dashed; opacity: .6;">
+          <p class="proj-type">🚧 Coming Soon</p>
+          <h3 class="proj-title">Next Project</h3>
+          <p class="proj-desc">Currently exploring ideas in AI and data science. Something is cooking — check back later.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">TBD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="page">
+      <p class="sec-label fi">04. contact</p>
+      <h2 class="fi" style="display:inline-block">Let's Connect</h2>
+      <p class="contact-sub fi">Open to internships, collabs, or just a good conversation.</p>
+      <a href="https://mail.google.com/mail/?view=cm&to=danizakhran12@gmail.com" target="_blank" class="btn btn-fill fi">→ Say Hello</a>
+      <div class="social-row fi">
+        <a href="https://github.com/Danizakhran" target="_blank" rel="noopener" class="social-link">GitHub</a>
+        <a href="https://instagram.com/danizkhrn" target="_blank" rel="noopener" class="social-link">Instagram</a>
+      </div>
+    </div>
+  </section>
+
+
+  <script>
+    document.getElementById('burger').addEventListener('click', () =>
+      document.getElementById('navLinks').classList.toggle('open')
+    );
+    document.querySelectorAll('.nav-links a').forEach(a =>
+      a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+    );
+
+    const phrases = ['CS Student 🎓', 'AI Enthusiast 🤖', 'Data Explorer 📊', 'Problem Solver 💡'];
+    let pi = 0, ci = 0, del = false;
+    const el = document.getElementById('typed');
+    function type() {
+      const p = phrases[pi];
+      el.textContent = del ? p.slice(0, --ci) : p.slice(0, ++ci);
+      if (!del && ci === p.length) { setTimeout(() => { del = true; type(); }, 1800); return; }
+      if (del && ci === 0) { del = false; pi = (pi + 1) % phrases.length; }
+      setTimeout(type, del ? 55 : 95);
+    }
+    setTimeout(type, 500);
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
